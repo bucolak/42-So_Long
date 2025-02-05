@@ -6,7 +6,7 @@
 /*   By: bucolak <bucolak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 17:36:19 by bucolak           #+#    #+#             */
-/*   Updated: 2025/02/03 16:50:53 by bucolak          ###   ########.fr       */
+/*   Updated: 2025/02/05 14:18:48 by bucolak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,28 +30,54 @@ char	*ft_strdup(char *s1)
 	return (p);
 }
 
-// size_t	ft_strlen(const char *x)
-// {
-// 	size_t	i;
+void find_player(t_play *game)
+{
+    int i;
+	int j;
 
-// 	i = 0;
-// 	while (x[i] != '\0')
-// 	{
-// 		i++;
-// 	}
-// 	return (i);
-// }
+	i = 0;
+	j = 0;
+	while(i < game->map_y)
+	{
+		j = 0;
+		while(j < game->map_x)
+		{
+			if(game->map[i][j] == 'P')
+			{
+				// ft_printf("%d %d\n", i, j);
+				game->start_loc_x = j;
+				game->start_loc_y = i;
+			}
+			j++;
+		}
+		i++;
+	}
+	flood_fill1(game, game->start_loc_x, game->start_loc_y);
+	 cf(game, game->new_map);
+	//flood_fill3(game, game->start_loc_x, game->start_loc_y);
+	newprint_map(game);
+}
 
-// char	*ft_strrchr(const char *s, int c)
-// {
-// 	int	i;
+int find_char(t_play *game, char c)
+{
+    int i;
+	int j;
 
-// 	i = ft_strlen(s);
-// 	while (i >= 0)
-// 	{
-// 		if (s[i] == (char)c)
-// 			return ((char *)(s + i));
-// 		i--;
-// 	}
-// 	return (0);
-// }
+	i = 0;
+	j = 0;
+	while(i < game->map_y)
+	{
+		j = 0;
+		while(j < game->map_x)
+		{
+			if(game->new_map[i][j] == c)
+			{
+				// ft_printf("%d %d\n", i, j);
+				return 1;
+			}
+			j++;
+		}
+		i++;
+	}
+	return 0;
+}

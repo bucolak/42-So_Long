@@ -6,7 +6,7 @@
 /*   By: bucolak <bucolak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 17:31:46 by bucolak           #+#    #+#             */
-/*   Updated: 2025/02/04 19:17:15 by bucolak          ###   ########.fr       */
+/*   Updated: 2025/02/05 14:34:06 by bucolak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,8 @@ typedef struct play
 	int start_loc_y;
 }	t_play;
 
+void find_player(t_play *game);
+int find_char(t_play *game, char c);
 char *remove_newline(char *line);
 void err_mess(char *mes);
 void map_check(t_play *game);

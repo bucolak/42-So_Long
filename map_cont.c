@@ -6,7 +6,7 @@
 /*   By: bucolak <bucolak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 17:37:32 by bucolak           #+#    #+#             */
-/*   Updated: 2025/02/04 19:40:38 by bucolak          ###   ########.fr       */
+/*   Updated: 2025/02/05 14:21:04 by bucolak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,7 @@ int check_walls(t_play *game)
 		if(game->map[game->map_y-1][i] == '\n')
 		{
 			if (game->map[0][i] != '1' || game->map[game->map_y-2][i] != '1')
-			{
 				return 0;
-			}
 		}
 		i++;
 	}
@@ -67,7 +65,6 @@ void count(t_play *game)
         }
         i++;
     }
-	//game->coin_fake_c=game->coin_c;
 }
 
 int valid_char(t_play *game)
@@ -85,7 +82,6 @@ int valid_char(t_play *game)
 				{
 					return 0;
 				}
-                
             j++;
         }
         i++;
@@ -93,103 +89,30 @@ int valid_char(t_play *game)
     return 1;
 }
 
-void flood_fill3(t_play *game,int x, int y)
-{
-	if(game->new_map[y][x+1] == 'E')
-	{
-		if(game->coin_c == 0)
-		{
-			game->new_map[y][x+1] = 'F';
-			flood_fill1(game,x+1, y);
-		}	
-	}
-	if(game->new_map[y][x-1] == 'E')
-	{
-		if(game->coin_c == 0)
-		{
-			game->new_map[y][x-1] = 'F';
-			flood_fill1(game,x-1, y);
-		}	
-	}
-	if(game->new_map[y+1][x] == 'E')
-	{
-		if(game->coin_c == 0)
-		{
-			game->new_map[y+1][x] = 'F';
-			flood_fill1(game,x, y+1);
-		}	
-	}
-	if(game->new_map[y-1][x] == 'E')
-	{
-		if(game->coin_c == 0)
-		{
-			game->new_map[y-1][x] = 'F';
-			flood_fill1(game,x, y-1);
-		}	
-	}
-}
 void flood_fill1(t_play *game,int x, int y)
 {
-	if((game->new_map[y][x+1] == 'C' || game->new_map[y][x+1] == '0'
-	   || game->new_map[y][x+1] == 'P'))
+	if (game->new_map[y][x] == 'C' || game->new_map[y][x] == '0' || game->new_map[y][x] == 'P')
+		game->new_map[y][x] = 'F';
+
+	if (game->new_map[y][x] == 'E')
 	{
-		if(game->new_map[y][x+1] == 'C')
-			game->coin_fake_c--;
-		game->new_map[y][x+1] = 'F';
-		flood_fill1(game,x+1, y);
+		if (find_char(game, 'C') == 0) // Eğer hala işaretlenmemiş C varsa, E'yi işaretleme
+			game->new_map[y][x] = 'F';
+		return;
 	}
-	if((game->new_map[y][x-1] == 'C' || game->new_map[y][x-1] == '0'
-	   || game->new_map[y][x-1] == 'P'))
-	{
-		if(game->new_map[y][x+1] == 'C')
-			game->coin_fake_c--;
-		game->new_map[y][x-1] = 'F';
-		flood_fill1(game,x-1, y);
-	}
-	if((game->new_map[y+1][x] == 'C' || game->new_map[y+1][x] == '0'
-	   || game->new_map[y+1][x] == 'P'))
-	{
-		if(game->new_map[y][x+1] == 'C')
-			game->coin_fake_c--;
-		game->new_map[y+1][x] = 'F';
-		flood_fill1(game,x, y+1);
-	}
-	if((game->new_map[y-1][x] == 'C' || game->new_map[y-1][x] == '0'
-	   || game->new_map[y-1][x] == 'P'))
-	{
-		if(game->new_map[y][x+1] == 'C')
-			game->coin_fake_c--;
-		game->new_map[y-1][x] = 'F';
-		flood_fill1(game,x, y-1);
-	}
+
+	if (game->new_map[y][x+1] != '1' && game->new_map[y][x+1] != 'F')
+		flood_fill1(game, x+1, y);
+
+	if (game->new_map[y][x-1] != '1' && game->new_map[y][x-1] != 'F')
+		flood_fill1(game, x-1, y);
+
+	if (game->new_map[y+1][x] != '1' && game->new_map[y+1][x] != 'F')
+		flood_fill1(game, x, y+1);
+
+	if (game->new_map[y-1][x] != '1' && game->new_map[y-1][x] != 'F')
+		flood_fill1(game, x, y-1);
 }
-// void flood_fill1(t_play *game,int x, int y)
-// {
-// 	if((game->new_map[y][x+1] == 'C' || game->new_map[y][x+1] == '0'
-// 	   || game->new_map[y][x+1] == 'E' || game->new_map[y][x+1] == 'P'))
-// 	{
-// 		game->new_map[y][x+1] = 'F';
-// 		flood_fill1(game,x+1, y);
-// 	}
-// 	if((game->new_map[y][x-1] == 'C' || game->new_map[y][x-1] == '0'
-// 	   || game->new_map[y][x-1] == 'E' || game->new_map[y][x-1] == 'P'))
-// 	{
-// 		game->new_map[y][x-1] = 'F';
-// 		flood_fill1(game,x-1, y);
-// 	}
-// 	if((game->new_map[y+1][x] == 'C' || game->new_map[y+1][x] == '0'
-// 	   || game->new_map[y+1][x] == 'E' || game->new_map[y+1][x] == 'P'))
-// 	{
-// 		game->new_map[y+1][x] = 'F';
-// 		flood_fill1(game,x, y+1);
-// 	}
-// 	if((game->new_map[y-1][x] == 'C' || game->new_map[y-1][x] == '0'
-// 	   || game->new_map[y-1][x] == 'E' || game->new_map[y-1][x] == 'P'))
-// 	{
-// 		game->new_map[y-1][x] = 'F';
-// 		flood_fill1(game,x, y-1);
-// 	}
-// }
 
 void map_check(t_play *game)
 {
@@ -219,26 +142,161 @@ void cf(t_play *game, char **map)
 		j = 0;
 		while(j < game->map_x)
 		{
-			// if(game->coin_fake_c==0 && map[i][j] == 'E')
-			// 	return ;
-			if(map[i][j] != 'E' && map[i][j] != 'F' && map[i][j] != '1')
-			{	
-				if (map[i][j] == '0')
+			if(map[i][j] != 'F' && map[i][j] != '1')
+			{		
+				if (find_char(game, 'E') ==1 && find_char(game, 'C')==0)
 				{
 					if(map[i+1][j] == '1' && map[i-1][j] == '1' && map[i][j+1] == '1' && map[i][j-1] == '1')
-						return ;
-					
+						err_mess("hatali map\n");
+					return ;
 				}
-				ft_printf("\n\n%c\n\n", map[i][j]);
-				ft_printf("%d\n",i);
-				ft_printf("%d\n",j);
+				if (map[i][j] == '0')
+				{
+					if(find_char(game, 'C') == 0 && find_char(game, 'E')==0)
+						return ;
+					if(map[i+1][j] == '1' && map[i-1][j] == '1' && map[i][j+1] == '1' && map[i][j-1] == '1')
+						return ;
+				}		
 				err_mess("hatali map\n");
 			}
-		//	ft_printf("%d\n",game->coin_fake_c);
-			if(game->coin_fake_c==0)
-				return ;
 			j++;
 		}
 		i++;
 	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// void flood_fill3(t_play *game,int x, int y)
+// {
+// 	if(game->new_map[y][x+1] == 'E')
+// 	{
+// 		if(game->coin_c == 0)
+// 		{
+// 			game->new_map[y][x+1] = 'F';
+// 			flood_fill1(game,x+1, y);
+// 		}	
+// 	}
+// 	if(game->new_map[y][x-1] == 'E')
+// 	{
+// 		if(game->coin_c == 0)
+// 		{
+// 			game->new_map[y][x-1] = 'F';
+// 			flood_fill1(game,x-1, y);
+// 		}	
+// 	}
+// 	if(game->new_map[y+1][x] == 'E')
+// 	{
+// 		if(game->coin_c == 0)
+// 		{
+// 			game->new_map[y+1][x] = 'F';
+// 			flood_fill1(game,x, y+1);
+// 		}	
+// 	}
+// 	if(game->new_map[y-1][x] == 'E')
+// 	{
+// 		if(game->coin_c == 0)
+// 		{
+// 			game->new_map[y-1][x] = 'F';
+// 			flood_fill1(game,x, y-1);
+// 		}	
+// 	}
+// }
+
+// void flood_fill1(t_play *game,int x, int y)
+// {	
+// 	if((game->new_map[y][x+1] == 'C' || game->new_map[y][x+1] == '0'
+// 	   || game->new_map[y][x+1] == 'P'))
+// 	{
+// 		game->new_map[y][x+1] = 'F';
+// 		flood_fill1(game,x+1, y);
+// 	}
+// 	if((game->new_map[y][x-1] == 'C' || game->new_map[y][x-1] == '0'
+// 	   || game->new_map[y][x-1] == 'P'))
+// 	{
+// 		game->new_map[y][x-1] = 'F';
+// 		flood_fill1(game,x-1, y);
+// 	}
+// 	if((game->new_map[y+1][x] == 'C' || game->new_map[y+1][x] == '0'
+// 	   || game->new_map[y+1][x] == 'P'))
+// 	{
+// 		game->new_map[y+1][x] = 'F';
+// 		flood_fill1(game,x, y+1);
+// 	}
+// 	if((game->new_map[y-1][x] == 'C' || game->new_map[y-1][x] == '0'
+// 	   || game->new_map[y-1][x] == 'P'))
+// 	{
+// 		game->new_map[y-1][x] = 'F';
+// 		flood_fill1(game,x, y-1);
+// 	}
+// }
+// void flood_fill1(t_play *game,int x, int y)
+// {
+// 	if((game->new_map[y][x+1] == 'C' || game->new_map[y][x+1] == '0'
+// 	   || game->new_map[y][x+1] == 'E' || game->new_map[y][x+1] == 'P'))
+// 	{
+// 		if (game->new_map[y][x+1] == 'E')
+// 		{
+// 			if (find_char(game, 'C') == 0)
+// 				game->new_map[y][x+1] = 'F';
+// 		}
+// 		else
+// 			game->new_map[y][x+1] = 'F';
+// 		flood_fill1(game,x+1, y);
+// 	}
+// 	if((game->new_map[y][x-1] == 'C' || game->new_map[y][x-1] == '0'
+// 	   || game->new_map[y][x-1] == 'E' || game->new_map[y][x-1] == 'P'))
+// 	{
+// 		if (game->new_map[y][x-1] == 'E')
+// 		{
+// 			if (find_char(game, 'C') == 0)
+// 				game->new_map[y][x-1] = 'F';
+// 		}
+// 		else
+// 			game->new_map[y][x-1] = 'F';
+// 		flood_fill1(game,x-1, y);
+// 	}
+// 	if((game->new_map[y+1][x] == 'C' || game->new_map[y+1][x] == '0'
+// 	   || game->new_map[y+1][x] == 'E' || game->new_map[y+1][x] == 'P'))
+// 	{
+// 		if (game->new_map[y+1][x] == 'E')
+// 		{
+// 			if (find_char(game, 'C') == 0)
+// 				game->new_map[y+1][x] = 'F';
+// 		}
+// 		else
+// 			game->new_map[y+1][x] = 'F';
+// 		flood_fill1(game,x, y+1);
+// 	}
+// 	if((game->new_map[y-1][x] == 'C' || game->new_map[y-1][x] == '0'
+// 	   || game->new_map[y-1][x] == 'E' || game->new_map[y-1][x] == 'P'))
+// 	{
+// 		if (game->new_map[y-1][x] == 'E')
+// 		{
+// 			if (find_char(game, 'C') == 0)
+// 				game->new_map[y-1][x] = 'F';
+// 		}
+// 		else
+// 			game->new_map[y-1][x] = 'F';
+// 		flood_fill1(game,x, y-1);
+// 	}
+// }

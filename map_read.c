@@ -6,7 +6,7 @@
 /*   By: bucolak <bucolak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 17:32:33 by bucolak           #+#    #+#             */
-/*   Updated: 2025/02/02 16:52:19 by bucolak          ###   ########.fr       */
+/*   Updated: 2025/02/05 14:21:24 by bucolak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,16 +96,9 @@ void read_file(t_play *game ,char *file_name)
 	while(line)
 	{
 		game->map[i] = ft_strdup(line);
-		// char *player_pos = strchr(game->map[i], 'P');
-        // if (player_pos)
-        // {
-        //     game->start_loc_x = player_pos - game->map[i];
-        //     game->start_loc_y = i;
-        // }
 		line = get_next_line(fd);
 		i++;
 	}
-	//game->map_y = i;
 	game->new_map = clone_map(game, game->map);
 	game->map_x = ft_strlen(game->map[0])-1;
 	close(fd);

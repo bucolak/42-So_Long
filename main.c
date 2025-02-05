@@ -6,7 +6,7 @@
 /*   By: bucolak <bucolak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 17:34:00 by bucolak           #+#    #+#             */
-/*   Updated: 2025/02/04 19:34:08 by bucolak          ###   ########.fr       */
+/*   Updated: 2025/02/05 14:47:27 by bucolak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,31 +33,20 @@ int close_win(t_play *game)
 	return 0;
 }
 
-void find_player(t_play *game)
+int check_map_shape(t_play *game)
 {
-    int i;
-	int j;
+    int i = 0;
+    int width = ft_strlen(game->map[0]);
 
-	i = 0;
-	j = 0;
-	while(i < game->map_y)
-	{
-		j = 0;
-		while(j < game->map_x)
-		{
-			if(game->map[i][j] == 'P')
-			{
-				// ft_printf("%d %d\n", i, j);
-				game->start_loc_x = j;
-				game->start_loc_y = i;
-			}
-			j++;
-		}
-		i++;
-	}
-	flood_fill1(game, game->start_loc_x, game->start_loc_y);
-	flood_fill3(game, game->start_loc_x, game->start_loc_y);
-	newprint_map(game);
+    while (i < game->map_y-1)
+    {
+        if ((int)ft_strlen(game->map[i]) != width)
+            return (0);
+        i++;
+    }
+	if((int)ft_strlen(game->map[game->map_y-1]) != (width-1))
+		return 0;
+    return (1);
 }
 
 int main(int argc, char *argv[])
@@ -67,19 +56,21 @@ int main(int argc, char *argv[])
 	t_play game;
 	inital(&game);
 	read_file(&game, argv[1]);
+	if(check_map_shape(&game) == 0)
+		err_mess("map is not rectengular\n");
+	if(!game.map)
+		err_mess("no map\n");
 	//print_map(&game);
-// 	ft_printf("\n");
 	count(&game);
-	game.coin_fake_c=game.coin_c; //.........
+	if (game.player_c != 1)
+		err_mess("İnvalid number of player!\n");
 	find_player(&game);
-	cf(&game, game.new_map);
-	//ft_printf("%d %d\n", game.start_loc_x, game.start_loc_y);
+	//cf(&game, game.new_map);
 	map_check(&game);
 	ber_cont(argv[1]);
 	game.mlx=mlx_init();
 	game.win = mlx_new_window(game.mlx, game.map_x*32, game. map_y*32, "so_long");
 	turn_to_img(&game);
-	
 	mlx_hook(game.win, 17, 0, close_win, &game);
 	mlx_hook(game.win, 2, 1L << 0, move_mech, &game);
 	mlx_loop_hook(game.mlx, (void *)put_img, &game);
