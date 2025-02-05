@@ -6,7 +6,7 @@
 /*   By: bucolak <bucolak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 17:31:46 by bucolak           #+#    #+#             */
-/*   Updated: 2025/02/05 14:34:06 by bucolak          ###   ########.fr       */
+/*   Updated: 2025/02/05 20:08:37 by bucolak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,6 @@ typedef struct play
 	void *floor;
 	int exit_c;
 	void *exit;
-	int coin_fake_c;
-	// int exit_x;
-	// int exit_y;
 	void *mlx;
 	void *win;
 	void *player;
@@ -42,15 +39,16 @@ typedef struct play
 	int start_loc_x;
 	int start_loc_y;
 }	t_play;
-
+int find_e_x(t_play *game);
+int find_e_y(t_play *game);
 void find_player(t_play *game);
 int find_char(t_play *game, char c);
 char *remove_newline(char *line);
-void err_mess(char *mes);
+void err_mess(t_play *game, char *mes);
 void map_check(t_play *game);
 int check_path(t_play *game, int x,int y,char **map);
 int valid_char(t_play *game);
-int count_line(char *file);
+int count_line(t_play *game, char *file);
 void read_file(t_play *game ,char *file_name);
 void load_img(t_play *game, int x, int y);
 void chck_img(t_play *game, int x, int y);
@@ -67,8 +65,11 @@ int close_win(t_play *game);
 void win(t_play *game);
 char	*ft_strrchr(const char *s, int c);
 //size_t	ft_strlen(const char *x);
-void ber_cont(char *filename);
+void ber_cont(t_play *game,char *filename);
 void cf(t_play *game, char **map);
 void flood_fill1(t_play *game,int x, int y);
 void flood_fill3(t_play *game,int x, int y);
+int check_walls(t_play *game);
+void	free_split(char **str);
+void	free_map(t_play *game);
 #endif

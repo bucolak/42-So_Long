@@ -6,7 +6,7 @@
 /*   By: bucolak <bucolak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 17:36:19 by bucolak           #+#    #+#             */
-/*   Updated: 2025/02/05 14:18:48 by bucolak          ###   ########.fr       */
+/*   Updated: 2025/02/05 17:46:22 by bucolak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,6 @@ void find_player(t_play *game)
 		{
 			if(game->map[i][j] == 'P')
 			{
-				// ft_printf("%d %d\n", i, j);
 				game->start_loc_x = j;
 				game->start_loc_y = i;
 			}
@@ -53,9 +52,50 @@ void find_player(t_play *game)
 		i++;
 	}
 	flood_fill1(game, game->start_loc_x, game->start_loc_y);
-	 cf(game, game->new_map);
-	//flood_fill3(game, game->start_loc_x, game->start_loc_y);
-	newprint_map(game);
+	cf(game, game->new_map);
+}
+int find_e_x(t_play *game)
+{
+	int i;
+	int j;
+
+	i = 0;
+	while(i < game->map_y)
+	{
+		j = 0;
+		while(j < game->map_x)
+		{
+			if(game->map[i][j] == 'E')
+			{
+				return i;
+			}
+			j++;
+		}
+		i++;
+	}
+	return 0;
+}
+
+int find_e_y(t_play *game)
+{
+	int i;
+	int j;
+
+	i = 0;
+	while(i < game->map_y)
+	{
+		j = 0;
+		while(j < game->map_x)
+		{
+			if(game->map[i][j] == 'E')
+			{
+				return j;
+			}
+			j++;
+		}
+		i++;
+	}
+	return 0;
 }
 
 int find_char(t_play *game, char c)
@@ -72,7 +112,6 @@ int find_char(t_play *game, char c)
 		{
 			if(game->new_map[i][j] == c)
 			{
-				// ft_printf("%d %d\n", i, j);
 				return 1;
 			}
 			j++;
@@ -80,4 +119,26 @@ int find_char(t_play *game, char c)
 		i++;
 	}
 	return 0;
+}
+
+void count(t_play *game)
+{
+	int i,j;
+	i = 0;
+
+	while (i < game->map_y)
+    {
+        j = 0;
+        while (j < game->map_x)
+        {
+            if (game->map[i][j] == 'P')
+                game->player_c++;
+            if (game->map[i][j] == 'C')
+                game->coin_c++;
+            if (game->map[i][j] == 'E')
+                game->exit_c++;
+            j++;
+        }
+        i++;
+    }
 }

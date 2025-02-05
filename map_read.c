@@ -6,21 +6,21 @@
 /*   By: bucolak <bucolak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 17:32:33 by bucolak           #+#    #+#             */
-/*   Updated: 2025/02/05 14:21:24 by bucolak          ###   ########.fr       */
+/*   Updated: 2025/02/05 20:30:21 by bucolak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
-void print_map(t_play *game)
-{
-    int i = 0;
-    while (i < game->map_y)
-    {
-        ft_printf("%s", game->map[i]);
-        i++;
-    }
-}
+// void print_map(t_play *game)
+// {
+//     int i = 0;
+//     while (i < game->map_y)
+//     {
+//         ft_printf("%s", game->map[i]);
+//         i++;
+//     }
+// }
 void newprint_map(t_play *game)
 {
     int i = 0;
@@ -38,7 +38,11 @@ char **clone_map(t_play *game ,char **map)
 	i = 0;
 	nmap = malloc((game->map_y + 1) * sizeof(char *));;
 	if(!nmap)
-		err_mess("hatali yer!\n");
+	{
+		free_split(game->map);
+		err_mess(game,"hatali yer!\n");
+	}
+		
 	while(map[i])
 	{
 		nmap[i] = ft_strdup(map[i]);
@@ -48,18 +52,7 @@ char **clone_map(t_play *game ,char **map)
 	return nmap;
 }
 
-char *remove_newline(char *line)
-{
-    // char *new_line;
-    int len;
-
-    len = ft_strlen(line);
-    if (line[len - 1] == '\n')
-        line[len - 1] = '\0';  // Newline karakterini sonlandırıcı null karakter ile değiştir
-    return (line);
-}
-
-int count_line(char *file)
+int count_line(t_play *game, char *file)
 {
 	int fd;
 	char *line;
@@ -68,34 +61,40 @@ int count_line(char *file)
 	c = 0;
 	fd = open(file, O_RDONLY);
 	if(fd<0)
-		err_mess("hatali fd\n");
+		err_mess(game,"hatali fd\n");
 	line=get_next_line(fd);
 	while(line)
 	{
 		c++;
+		free(line);
 		line=get_next_line(fd);
 	}
 	close(fd);
 	return c;
 }
-#include <string.h>
+
 void read_file(t_play *game ,char *file_name)
 {
 	int i;
 	int fd;
 	char *line;
 	i = 0;
-	game->map_y = count_line(file_name);
+	game->map_y = count_line(game,file_name);
 	fd = open(file_name, O_RDONLY);
 	if (fd<0)
-		err_mess("hatali\n");
+		err_mess(game,"hatali\n");
 	game->map = malloc(sizeof(char *)*(game->map_y+1));
 	if (!game->map)
-		err_mess("yer açilamadı!\n");
+	{
+		free_split(game->map);
+		err_mess(game,"yer açilamadı!\n");
+	}
+		
 	line = get_next_line(fd);
 	while(line)
 	{
 		game->map[i] = ft_strdup(line);
+		free(line);
 		line = get_next_line(fd);
 		i++;
 	}

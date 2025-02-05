@@ -2,7 +2,7 @@ NAME = so_long
 
 # SRC = main.c get_next_line/get_next_line.c get_next_line/get_next_line_utils.c map_cont.c map_read.c movee.c create_image.c lib.c
 
-SRC = main.c get_next_line/get_next_line.c get_next_line/get_next_line_utils.c map_read.c lib.c map_cont.c move.c img_cont.c victory.c
+SRC = main.c get_next_line/get_next_line.c get_next_line/get_next_line_utils.c map_read.c lib.c map_cont.c move.c img_cont.c victory.c flood_fill.c
 
 OBJ = $(SRC:.c=.o)
 

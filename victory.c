@@ -6,7 +6,7 @@
 /*   By: bucolak <bucolak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/02 18:18:32 by bucolak           #+#    #+#             */
-/*   Updated: 2025/02/02 19:47:30 by bucolak          ###   ########.fr       */
+/*   Updated: 2025/02/05 20:42:41 by bucolak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 void win(t_play *game)
 {
+    free_map(game);
     mlx_destroy_window(game->mlx, game->win);
-    //  mlx_loop_end(game->mlx);
     ft_printf("\033[1;34m");
     ft_printf("************************************************\n");
     ft_printf("*                                              *\n");
@@ -29,8 +29,9 @@ void win(t_play *game)
     exit(0);
 }
 
-void err_mess(char *mes)
+void err_mess(t_play *game, char *mes)
 {
     ft_printf("%s",mes);
+    free_map(game);
     exit(0);
 }

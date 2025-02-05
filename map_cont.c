@@ -6,25 +6,16 @@
 /*   By: bucolak <bucolak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 17:37:32 by bucolak           #+#    #+#             */
-/*   Updated: 2025/02/05 14:21:04 by bucolak          ###   ########.fr       */
+/*   Updated: 2025/02/05 19:13:39 by bucolak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
-int check_walls(t_play *game)
+int check_walls2(t_play *game)
 {
 	int i;
 
-	i = 0;
-	while(i < game->map_x-1)
-	{
-		if(game->map[0][i] != '1')
-			return 0;
-		if (game->map[game->map_y-1][i] != '1')
-			return 0;
-		i++;
-	}
 	i = 0;
 	while(i < game->map_x)
 	{
@@ -35,6 +26,21 @@ int check_walls(t_play *game)
 		}
 		i++;
 	}
+	return 1;
+}
+int check_walls(t_play *game)
+{
+	int i;
+
+	i = 0;
+	while(i < game->map_x-1)
+	{
+		if(game->map[0][i] != '1' || game->map[game->map_y-1][i] != '1')
+			return 0;
+		i++;
+	}
+	if(check_walls2(game)==0)
+		return 0;
 	i = 0;
 	while (i < game->map_y)
 	{
@@ -43,28 +49,6 @@ int check_walls(t_play *game)
 		i++;
 	}
 	return 1;
-}
-
-void count(t_play *game)
-{
-	int i,j;
-	i = 0;
-
-	while (i < game->map_y)
-    {
-        j = 0;
-        while (j < game->map_x)
-        {
-            if (game->map[i][j] == 'P')
-                game->player_c++;
-            if (game->map[i][j] == 'C')
-                game->coin_c++;
-            if (game->map[i][j] == 'E')
-                game->exit_c++;
-            j++;
-        }
-        i++;
-    }
 }
 
 int valid_char(t_play *game)
@@ -89,85 +73,37 @@ int valid_char(t_play *game)
     return 1;
 }
 
-void flood_fill1(t_play *game,int x, int y)
+int check_map_shape(t_play *game)
 {
-	if (game->new_map[y][x] == 'C' || game->new_map[y][x] == '0' || game->new_map[y][x] == 'P')
-		game->new_map[y][x] = 'F';
+    int i = 0;
+    int width = ft_strlen(game->map[0]);
 
-	if (game->new_map[y][x] == 'E')
-	{
-		if (find_char(game, 'C') == 0) // Eğer hala işaretlenmemiş C varsa, E'yi işaretleme
-			game->new_map[y][x] = 'F';
-		return;
-	}
-
-	if (game->new_map[y][x+1] != '1' && game->new_map[y][x+1] != 'F')
-		flood_fill1(game, x+1, y);
-
-	if (game->new_map[y][x-1] != '1' && game->new_map[y][x-1] != 'F')
-		flood_fill1(game, x-1, y);
-
-	if (game->new_map[y+1][x] != '1' && game->new_map[y+1][x] != 'F')
-		flood_fill1(game, x, y+1);
-
-	if (game->new_map[y-1][x] != '1' && game->new_map[y-1][x] != 'F')
-		flood_fill1(game, x, y-1);
+    while (i < game->map_y-1)
+    {
+        if ((int)ft_strlen(game->map[i]) != width)
+            return (0);
+        i++;
+    }
+	if((int)ft_strlen(game->map[game->map_y-1]) != (width-1))
+		return 0;
+    return (1);
 }
 
 void map_check(t_play *game)
 {
+	// if (game->player_c != 1)
+	// 	err_mess("İnvalid number of player!\n");
 	if(game->coin_c<1)
-		err_mess("There is less than one coin!\n");
+		err_mess(game,"There is less than one coin!\n");
 	if (game->exit_c != 1)
-		err_mess("İnvalid number of exit door!\n");
-	if (game->player_c != 1)
-		err_mess("İnvalid number of player!\n");
-	if (game->map_x == game->map_y)
-		err_mess("Map is not rectangular!\n");
+		err_mess(game,"İnvalid number of exit door!\n");
+	if (game->map_x == game->map_y || check_map_shape(game) == 0)
+		err_mess(game,"Map is not rectangular!\n");
 	if (check_walls(game) == 0)
-		err_mess("İnvalid walls!\n");
+		err_mess(game,"İnvalid walls!\n");
 	if (valid_char(game) == 0)
-		err_mess("Invalid char!\n");
+		err_mess(game,"Invalid char!\n");
 }
-
-void cf(t_play *game, char **map)
-{
-    int i;
-	int j;
-
-	i = 0;
-	j = 0;
-	while(i < game->map_y)
-	{
-		j = 0;
-		while(j < game->map_x)
-		{
-			if(map[i][j] != 'F' && map[i][j] != '1')
-			{		
-				if (find_char(game, 'E') ==1 && find_char(game, 'C')==0)
-				{
-					if(map[i+1][j] == '1' && map[i-1][j] == '1' && map[i][j+1] == '1' && map[i][j-1] == '1')
-						err_mess("hatali map\n");
-					return ;
-				}
-				if (map[i][j] == '0')
-				{
-					if(find_char(game, 'C') == 0 && find_char(game, 'E')==0)
-						return ;
-					if(map[i+1][j] == '1' && map[i-1][j] == '1' && map[i][j+1] == '1' && map[i][j-1] == '1')
-						return ;
-				}		
-				err_mess("hatali map\n");
-			}
-			j++;
-		}
-		i++;
-	}
-}
-
-
-
-
 
 
 

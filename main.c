@@ -6,7 +6,7 @@
 /*   By: bucolak <bucolak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 17:34:00 by bucolak           #+#    #+#             */
-/*   Updated: 2025/02/05 14:47:27 by bucolak          ###   ########.fr       */
+/*   Updated: 2025/02/05 20:28:13 by bucolak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,36 +17,45 @@ void inital(t_play *game)
 	game->move = 0;
 	game->coin_c = 0;
 	game->exit_c = 0;
-	// game->exit_x = 0;
-	// game->exit_y = 0;
 	game->start_loc_x = 0;
 	game->start_loc_y = 0;
 	game->player_c = 0;
 	game->map_x = 0;
 	game->map_y = 0;
-	game->coin_fake_c=0;
 }
 int close_win(t_play *game)
 {
 	mlx_destroy_window(game->mlx, game->win);
+	free_map(game);
 	exit(0);
 	return 0;
 }
-
-int check_map_shape(t_play *game)
+void	free_map(t_play *game)
 {
-    int i = 0;
-    int width = ft_strlen(game->map[0]);
+	int	i;
 
-    while (i < game->map_y-1)
-    {
-        if ((int)ft_strlen(game->map[i]) != width)
-            return (0);
-        i++;
-    }
-	if((int)ft_strlen(game->map[game->map_y-1]) != (width-1))
-		return 0;
-    return (1);
+	i = 0;
+	while (i < game->map_y)
+	{
+		free(game->map[i]);
+		i++;
+	}
+	free(game->map);
+	game->map = NULL;
+}
+void	free_split(char **str)
+{
+	int	i;
+
+	if (!str)
+		return ;
+	i = 0;
+	while (str[i])
+	{
+		free(str[i]);
+		i++;
+	}
+	free(str);
 }
 
 int main(int argc, char *argv[])
@@ -56,18 +65,17 @@ int main(int argc, char *argv[])
 	t_play game;
 	inital(&game);
 	read_file(&game, argv[1]);
-	if(check_map_shape(&game) == 0)
-		err_mess("map is not rectengular\n");
-	if(!game.map)
-		err_mess("no map\n");
-	//print_map(&game);
 	count(&game);
 	if (game.player_c != 1)
-		err_mess("İnvalid number of player!\n");
-	find_player(&game);
-	//cf(&game, game.new_map);
+	{
+		free_split(game.map);
+		free_split(game.new_map);
+		err_mess(&game,"İnvalid number of player!\n");
+	}
 	map_check(&game);
-	ber_cont(argv[1]);
+	find_player(&game);
+	ber_cont(&game,argv[1]);
+	free_split(game.new_map);
 	game.mlx=mlx_init();
 	game.win = mlx_new_window(game.mlx, game.map_x*32, game. map_y*32, "so_long");
 	turn_to_img(&game);
@@ -77,38 +85,3 @@ int main(int argc, char *argv[])
 	mlx_loop(game.mlx);
 	return 0;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// void clean_map(t_play *game)
-// {
-//     int i, j;
-
-//     i = 0;
-//     while (i < game->map_y)
-//     {
-//         j = 0;
-//         while (j < game->map_x)
-//         {
-//             if (game->new_map[i][j] == '\n')
-//                 game->new_map[i][j] = '\0';
-//             j++;
-//         }
-//         i++;
-//     }
-// }

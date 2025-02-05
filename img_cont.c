@@ -6,7 +6,7 @@
 /*   By: bucolak <bucolak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 14:40:42 by bucolak           #+#    #+#             */
-/*   Updated: 2025/02/05 14:17:15 by bucolak          ###   ########.fr       */
+/*   Updated: 2025/02/05 20:27:21 by bucolak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,19 +19,19 @@ void turn_to_img(t_play *game)
     
     game->player = mlx_xpm_file_to_image(game->mlx, "img/character.xpm", &width, &height);
     if (!game->player)
-        err_mess("No player img!\n");
+        err_mess(game,"No player img!\n");
     game->coin = mlx_xpm_file_to_image(game->mlx, "img/coin.xpm", &width, &height);
     if (!game->coin)
-        err_mess("No coin img!\n");
+        err_mess(game,"No coin img!\n");
     game->wall = mlx_xpm_file_to_image(game->mlx, "img/wall.xpm", &width, &height);
     if (!game->wall)
-        err_mess("No wall img!\n");
+        err_mess(game,"No wall img!\n");
     game->floor = mlx_xpm_file_to_image(game->mlx, "img/floor.xpm", &width, &height);
     if (!game->floor)
-        err_mess("No floor img!\n");
+        err_mess(game,"No floor img!\n");
     game->exit = mlx_xpm_file_to_image(game->mlx, "img/door.xpm", &width, &height);
     if (!game->exit)
-        err_mess("No exit door img!\n");
+        err_mess(game,"No exit door img!\n");
 }
 
 void put_img(t_play *game)
@@ -62,11 +62,21 @@ void put_img(t_play *game)
     }
 }
 
-void ber_cont(char *filename)
+void ber_cont(t_play *game,char *filename)
 {
     int s = ft_strlen(filename);
     if(!filename || s <4)
-        err_mess("map name is wrong!\n");
+    {
+        free_split(game->map);
+        free_split(game->new_map);
+        err_mess(game,"map name is wrong!\n");
+    }
+        
     if(filename[s-1] != 'r' || filename[s-2] != 'e' || filename[s-3] != 'b' || filename[s-4] != '.')
-        err_mess("map name is wrong!\n");
+    {
+        free_split(game->new_map);
+        free_split(game->map);
+        err_mess(game,"map name is wrong!\n");
+    }
+        
 }
