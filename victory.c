@@ -6,16 +6,15 @@
 /*   By: bucolak <bucolak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/02 18:18:32 by bucolak           #+#    #+#             */
-/*   Updated: 2025/02/05 20:42:41 by bucolak          ###   ########.fr       */
+/*   Updated: 2025/02/06 19:15:16 by bucolak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
-void win(t_play *game)
+void win(void)
 {
-    free_map(game);
-    mlx_destroy_window(game->mlx, game->win);
+    //mlx_destroy_window(game->mlx, game->win);
     ft_printf("\033[1;34m");
     ft_printf("************************************************\n");
     ft_printf("*                                              *\n");
@@ -31,7 +30,9 @@ void win(t_play *game)
 
 void err_mess(t_play *game, char *mes)
 {
-    ft_printf("%s",mes);
-    free_map(game);
+    ft_printf("%s", mes);
+    if(game->map || game->new_map)
+        handle_free(game);
+    // game yapısını serbest bırakın
     exit(0);
 }

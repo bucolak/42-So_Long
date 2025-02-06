@@ -6,7 +6,7 @@
 /*   By: bucolak <bucolak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 17:37:32 by bucolak           #+#    #+#             */
-/*   Updated: 2025/02/05 19:13:39 by bucolak          ###   ########.fr       */
+/*   Updated: 2025/02/06 17:09:24 by bucolak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,18 +91,36 @@ int check_map_shape(t_play *game)
 
 void map_check(t_play *game)
 {
-	// if (game->player_c != 1)
-	// 	err_mess("İnvalid number of player!\n");
 	if(game->coin_c<1)
+	{
+		exit_2(game);
+		handle_free(game);
 		err_mess(game,"There is less than one coin!\n");
+	}
 	if (game->exit_c != 1)
+	{
+		exit_2(game);
+		handle_free(game);
 		err_mess(game,"İnvalid number of exit door!\n");
+	}
 	if (game->map_x == game->map_y || check_map_shape(game) == 0)
+	{
+		exit_2(game);
+		handle_free(game);
 		err_mess(game,"Map is not rectangular!\n");
+	}
 	if (check_walls(game) == 0)
+	{
+		exit_2(game);
+		handle_free(game);
 		err_mess(game,"İnvalid walls!\n");
+	}
 	if (valid_char(game) == 0)
+	{
+		exit_2(game);
+		handle_free(game);
 		err_mess(game,"Invalid char!\n");
+	}
 }
 
 

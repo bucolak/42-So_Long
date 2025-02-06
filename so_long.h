@@ -6,7 +6,7 @@
 /*   By: bucolak <bucolak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 17:31:46 by bucolak           #+#    #+#             */
-/*   Updated: 2025/02/05 20:08:37 by bucolak          ###   ########.fr       */
+/*   Updated: 2025/02/06 19:21:36 by bucolak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 #include"minilibx-linux/mlx.h"
 #include "ft_printf/ft_printf.h"
 #include "get_next_line/get_next_line.h"
+
 
 typedef struct play
 {
@@ -39,6 +40,7 @@ typedef struct play
 	int start_loc_x;
 	int start_loc_y;
 }	t_play;
+
 int find_e_x(t_play *game);
 int find_e_y(t_play *game);
 void find_player(t_play *game);
@@ -60,9 +62,9 @@ void count(t_play *game);
 void clean_map(t_play *game);
 void newprint_map(t_play *game);
 void turn_to_img(t_play *game);
-void put_img(t_play *game);
+int put_img(t_play *game);
 int close_win(t_play *game);
-void win(t_play *game);
+void win(void);
 char	*ft_strrchr(const char *s, int c);
 //size_t	ft_strlen(const char *x);
 void ber_cont(t_play *game,char *filename);
@@ -72,4 +74,9 @@ void flood_fill3(t_play *game,int x, int y);
 int check_walls(t_play *game);
 void	free_split(char **str);
 void	free_map(t_play *game);
+int exit_program(t_play *game);
+void exit_2(t_play *game);
+void handle_free(t_play *game);
+void	free_newmap(t_play *game);
+
 #endif

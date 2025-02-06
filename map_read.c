@@ -6,7 +6,7 @@
 /*   By: bucolak <bucolak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 17:32:33 by bucolak           #+#    #+#             */
-/*   Updated: 2025/02/05 20:30:21 by bucolak          ###   ########.fr       */
+/*   Updated: 2025/02/06 19:19:21 by bucolak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,21 +34,27 @@ char **clone_map(t_play *game ,char **map)
 {
 	char **nmap;
 	int i;
-
 	i = 0;
 	nmap = malloc((game->map_y + 1) * sizeof(char *));;
 	if(!nmap)
 	{
-		free_split(game->map);
+		exit_2(game);
+		handle_free(game);
 		err_mess(game,"hatali yer!\n");
 	}
 		
 	while(map[i])
 	{
 		nmap[i] = ft_strdup(map[i]);
+		if (!nmap[i])  // ft_strdup başarısız olursa
+		{
+			exit_2(game);
+			handle_free(game);
+			err_mess(game, "Bellek tahsisi başarısız!\n");
+		}
 		i++;
 	}
-	//nmap[i] = NULL;
+	nmap[i] = NULL;
 	return nmap;
 }
 
@@ -61,7 +67,9 @@ int count_line(t_play *game, char *file)
 	c = 0;
 	fd = open(file, O_RDONLY);
 	if(fd<0)
+	{
 		err_mess(game,"hatali fd\n");
+	}
 	line=get_next_line(fd);
 	while(line)
 	{
@@ -82,14 +90,17 @@ void read_file(t_play *game ,char *file_name)
 	game->map_y = count_line(game,file_name);
 	fd = open(file_name, O_RDONLY);
 	if (fd<0)
+	{
+		exit_2(game);
 		err_mess(game,"hatali\n");
+	}
 	game->map = malloc(sizeof(char *)*(game->map_y+1));
 	if (!game->map)
 	{
-		free_split(game->map);
+		free_map(game);
+		exit_2(game);
 		err_mess(game,"yer açilamadı!\n");
 	}
-		
 	line = get_next_line(fd);
 	while(line)
 	{
@@ -98,9 +109,12 @@ void read_file(t_play *game ,char *file_name)
 		line = get_next_line(fd);
 		i++;
 	}
+	game->map[i] = NULL;
+	if (i == 0)
+	{
+		err_mess(game,"no map\n");
+	}
 	game->new_map = clone_map(game, game->map);
 	game->map_x = ft_strlen(game->map[0])-1;
 	close(fd);
 }
-
-

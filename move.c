@@ -6,7 +6,7 @@
 /*   By: bucolak <bucolak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 13:43:47 by bucolak           #+#    #+#             */
-/*   Updated: 2025/02/05 20:28:53 by bucolak          ###   ########.fr       */
+/*   Updated: 2025/02/06 18:09:07 by bucolak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,10 @@ void move_w(t_play *game)
 		if (game->coin_c == 0)
 		{
 			game->map[game->start_loc_y][game->start_loc_x] = '0';
-			free_split(game->map);
-			free_split(game->new_map);
-			win(game);
+			exit_2(game); 
+			handle_free(game);
+			//free(game);
+			win();
 		}
 
 	}
@@ -51,9 +52,10 @@ void move_a(t_play *game)
 		if (game->coin_c == 0)
 		{
 			game->map[game->start_loc_y][game->start_loc_x] = '0';
-			free_split(game->map);
-			free_split(game->new_map);
-			win(game);
+			exit_2(game);
+			handle_free(game);
+			//free(game);
+			win();
 		}
 	}
 	if (game->map[game->start_loc_y][game->start_loc_x-1] != '1' && game->map[game->start_loc_y][game->start_loc_x-1] != 'E')
@@ -77,9 +79,10 @@ void move_s(t_play *game)
 		if (game->coin_c == 0)
 		{
 			game->map[game->start_loc_y][game->start_loc_x] = '0';
-			free_split(game->map);
-			free_split(game->new_map);
-			win(game);
+			exit_2(game);
+			handle_free(game);
+			//free(game);
+			win();
 		}
 	}
 	if (game->map[game->start_loc_y+1][game->start_loc_x] != '1' && game->map[game->start_loc_y+1][game->start_loc_x] != 'E')
@@ -103,9 +106,10 @@ void move_d(t_play *game)
 		if (game->coin_c == 0)
 		{
 			game->map[game->start_loc_y][game->start_loc_x] = '0';
-			free_split(game->map);
-			free_split(game->new_map);
-			win(game);
+			exit_2(game);
+			handle_free(game);
+			//free(game);
+			win();
 		}
 	}
 		if (game->map[game->start_loc_y][game->start_loc_x+1] != '1' && game->map[game->start_loc_y][game->start_loc_x+1] != 'E')

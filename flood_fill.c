@@ -6,7 +6,7 @@
 /*   By: bucolak <bucolak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 16:00:09 by bucolak           #+#    #+#             */
-/*   Updated: 2025/02/05 19:12:47 by bucolak          ###   ########.fr       */
+/*   Updated: 2025/02/06 17:07:49 by bucolak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,12 +50,16 @@ void ekcf(t_play *game, int i, int j)
 	    }
         if(game->new_map[i+1][j] == '1' && game->new_map[i-1][j] == '1' && game->new_map[i][j+1] == '1' && game->new_map[i][j-1] == '1')
         {
-            ft_printf("\n%c\n",game->new_map[i][j]);
+			exit_2(game);
+			handle_free(game);
+            // ft_printf("\n%c\n",game->new_map[i][j]);
              err_mess(game,"hatali map\n");	
         }
         if(find_char(game, '0') ==1)
         {
-            ft_printf("\n%c\n",game->new_map[i][j]);
+			exit_2(game);
+			handle_free(game);
+            // ft_printf("\n%c\n",game->new_map[i][j]);
             err_mess(game,"hatali map\n");
         }
 		return ;
@@ -66,7 +70,9 @@ void ekcf(t_play *game, int i, int j)
 			return ;
 		if(game->new_map[i+1][j] == '1' && game->new_map[i-1][j] == '1' && game->new_map[i][j+1] == '1' && game->new_map[i][j-1] == '1')
 			return ;
-	}		
+	}	
+	exit_2(game);
+	handle_free(game);	
 	err_mess(game,"hatali map\n");
 }
 
