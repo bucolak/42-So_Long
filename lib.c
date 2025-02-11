@@ -6,7 +6,7 @@
 /*   By: bucolak <bucolak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 17:36:19 by bucolak           #+#    #+#             */
-/*   Updated: 2025/02/05 17:46:22 by bucolak          ###   ########.fr       */
+/*   Updated: 2025/02/07 15:58:34 by bucolak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,19 +30,19 @@ char	*ft_strdup(char *s1)
 	return (p);
 }
 
-void find_player(t_play *game)
+void	find_player(t_play *game)
 {
-    int i;
-	int j;
+	int	i;
+	int	j;
 
 	i = 0;
 	j = 0;
-	while(i < game->map_y)
+	while (i < game->map_y)
 	{
 		j = 0;
-		while(j < game->map_x)
+		while (j < game->map_x)
 		{
-			if(game->map[i][j] == 'P')
+			if (game->map[i][j] == 'P')
 			{
 				game->start_loc_x = j;
 				game->start_loc_y = i;
@@ -54,91 +54,70 @@ void find_player(t_play *game)
 	flood_fill1(game, game->start_loc_x, game->start_loc_y);
 	cf(game, game->new_map);
 }
-int find_e_x(t_play *game)
+
+int	find_e_x(t_play *game)
 {
-	int i;
-	int j;
+	int	i;
+	int	j;
 
 	i = 0;
-	while(i < game->map_y)
+	while (i < game->map_y)
 	{
 		j = 0;
-		while(j < game->map_x)
+		while (j < game->map_x)
 		{
-			if(game->map[i][j] == 'E')
+			if (game->map[i][j] == 'E')
 			{
-				return i;
+				return (i);
 			}
 			j++;
 		}
 		i++;
 	}
-	return 0;
+	return (0);
 }
 
-int find_e_y(t_play *game)
+int	find_e_y(t_play *game)
 {
-	int i;
-	int j;
+	int	i;
+	int	j;
 
 	i = 0;
-	while(i < game->map_y)
+	while (i < game->map_y)
 	{
 		j = 0;
-		while(j < game->map_x)
+		while (j < game->map_x)
 		{
-			if(game->map[i][j] == 'E')
+			if (game->map[i][j] == 'E')
 			{
-				return j;
+				return (j);
 			}
 			j++;
 		}
 		i++;
 	}
-	return 0;
+	return (0);
 }
 
-int find_char(t_play *game, char c)
+int	find_char(t_play *game, char c)
 {
-    int i;
-	int j;
+	int	i;
+	int	j;
 
 	i = 0;
 	j = 0;
-	while(i < game->map_y)
+	while (i < game->map_y)
 	{
 		j = 0;
-		while(j < game->map_x)
+		while (j < game->map_x)
 		{
-			if(game->new_map[i][j] == c)
+			if (game->new_map[i][j] == c)
 			{
-				return 1;
+				return (1);
 			}
 			j++;
 		}
 		i++;
 	}
-	return 0;
-}
-
-void count(t_play *game)
-{
-	int i,j;
-	i = 0;
-
-	while (i < game->map_y)
-    {
-        j = 0;
-        while (j < game->map_x)
-        {
-            if (game->map[i][j] == 'P')
-                game->player_c++;
-            if (game->map[i][j] == 'C')
-                game->coin_c++;
-            if (game->map[i][j] == 'E')
-                game->exit_c++;
-            j++;
-        }
-        i++;
-    }
+	return (0);
 }

@@ -1,10 +1,10 @@
 NAME = so_long
 
-SRC = main.c get_next_line/get_next_line.c get_next_line/get_next_line_utils.c map_read.c lib.c map_cont.c move.c img_cont.c victory.c flood_fill.c
+SRC = main.c get_next_line/get_next_line.c get_next_line/get_next_line_utils.c map_read.c lib.c map_cont.c move.c img_cont.c victory.c flood_fill.c free.c
 
 OBJ = $(SRC:.c=.o)
 
-CFLAGS = -Wall -Wextra -Werror #-fsanitize=address -g
+CFLAGS = -Wall -Wextra -Werror
 
 FT_PRINTF_LIB = ft_printf/libftprintf.a
 
