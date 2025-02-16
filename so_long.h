@@ -6,7 +6,7 @@
 /*   By: bucolak <bucolak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 17:31:46 by bucolak           #+#    #+#             */
-/*   Updated: 2025/02/09 13:59:32 by bucolak          ###   ########.fr       */
+/*   Updated: 2025/02/16 13:24:15 by bucolak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,6 @@ int			move_mech(int key_code, t_play *game);
 char		*ft_strdup(char *s1);
 void		turn_to_img(t_play *game);
 int			put_img(t_play *game);
-int			close_win(t_play *game);
 void		win(void);
 void		ber_cont(t_play *game, char *filename);
 void		cf(t_play *game, char **map);

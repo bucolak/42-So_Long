@@ -6,7 +6,7 @@
 /*   By: bucolak <bucolak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 17:34:00 by bucolak           #+#    #+#             */
-/*   Updated: 2025/02/11 18:40:20 by bucolak          ###   ########.fr       */
+/*   Updated: 2025/02/16 13:45:16 by bucolak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,20 +53,6 @@ void	count(t_play *game)
 	}
 }
 
-int	close_win(t_play *game)
-{
-	if (game->win)
-		mlx_destroy_window(game->mlx, game->win);
-	if (game->mlx)
-	{
-		mlx_destroy_display(game->mlx);
-		free(game->mlx);
-	}
-	handle_free(game);
-	exit(0);
-	return (0);
-}
-
 int	main(int argc, char *argv[])
 {
 	t_play	game;
@@ -84,7 +70,7 @@ int	main(int argc, char *argv[])
 	game.win = mlx_new_window(game.mlx, game.map_x * 32, game.map_y * 32,
 			"so_long");
 	turn_to_img(&game);
-	mlx_hook(game.win, 17, 0, close_win, &game);
+	mlx_hook(game.win, 17, 0, exit_program, &game);
 	mlx_hook(game.win, 2, 1L << 0, move_mech, &game);
 	mlx_loop_hook(game.mlx, put_img, &game);
 	mlx_loop(game.mlx);

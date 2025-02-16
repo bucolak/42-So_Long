@@ -30,9 +30,11 @@ clean:
 	$(MAKE) -C ft_printf clean
 
 
-fclean:
+fclean: clean
 	rm -f $(NAME)
 	$(MAKE) -C ft_printf fclean
 
 
 re: fclean all
+
+.PHONY: all clean fclean re 

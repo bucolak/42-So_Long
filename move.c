@@ -6,7 +6,7 @@
 /*   By: bucolak <bucolak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 13:43:47 by bucolak           #+#    #+#             */
-/*   Updated: 2025/02/11 18:39:09 by bucolak          ###   ########.fr       */
+/*   Updated: 2025/02/16 13:23:16 by bucolak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,6 +134,6 @@ int	move_mech(int key_code, t_play *game)
 		exit_program(game);
 	else
 		return (0);
-	ft_printf("\033[32mMOVE %d  COIN %d\n", game->move, game->coin_c);
+	ft_printf("\033[32mMOVE %d  COIN %d\033[0m\n", game->move, game->coin_c);
 	return (1);
 }
